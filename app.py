@@ -1,11 +1,16 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
-from models import inserir_impressora, cadastrar_impressora_interface
-
+from models import (
+    cadastrar_impressora_interface,
+    atualizar_lista_treeview,
+    listar_impressoras,
+    cadastrar_consumivel_interface,
+    atualizar_lista_consumiveis_treeview
+)
 # Janela principal
 root = tk.Tk()
 root.title("Controle de consumíveis")
-root.geometry("650x400")
+root.geometry("800x600")
 
 # Criar abas
 notebook = ttk.Notebook(root)
@@ -51,4 +56,24 @@ scrollbar.grid(row=2, column=4, sticky='ns', pady=10)
 
 frame_impressora.rowconfigure(2, weight=1)
 
-root.mainloop()
+#--------------------------------------------
+# Aba 2: Cadastro de Consumíveis
+#--------------------------------------------
+
+frame_consumiveis = ttk.Frame(notebook)
+notebook.add(frame_consumiveis, text='Cadastro de Consumíveis')
+
+for i in range(4):
+    frame_consumiveis.columnconfigure(i, weight=1)
+
+# Carrega a lista de impressoras para o combobox (formato "ID - MODELO")
+impressoras = listar_impressoras()
+impressoras_lista = [f"{imp[0]} - {imp[2]}" for imp in impressoras]
+
+ttk.Label(frame_consumiveis, text="Impressora:")\
+    .grid(row=0, column=0, padx=10, pady=10, sticky='w')
+impressora_var = tk.StringVar()
+impressora_combo = ttk.Combobox(frame_consumiveis, textvariable=impressora_var, values=impressoras_lista)
+impressora_combo.grid(row=0, column=1, padx=10, pady=10, sticky='w')
+
+# fazer label nome consumível 
